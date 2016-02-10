@@ -1,0 +1,16 @@
+---
+
+- name: Stop mongodb
+  service: name=mongod state=stopped
+
+- name: Copy mongos service config file into /etc/init
+  template: src=mongos.service dest=/etc/init/mongos.conf
+
+- name: Update services
+  shell: initctl reload-configuration
+
+- name: Copying mongo configuration to /etc/mongos.conf
+  template: src=mongos.conf dest=/etc/mongos.conf
+
+- name: Start mongos
+  service: name=mongos state=restarted

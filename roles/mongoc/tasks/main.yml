@@ -1,0 +1,16 @@
+---
+
+- name: Copying mongo configuration to /etc/mongod.conf
+  template: src=mongod.conf dest=/etc/mongod.conf
+
+- name: restart Mongodb
+  service: name=mongod state=restarted
+
+- name: Pausing for 20 seconds to make sure mongodb is up after restarting the service
+  pause: seconds=20
+
+- name: Copying configuration js into /tmp
+  template: src=config.js dest=/tmp
+
+- name: Configuring config servers replica set
+  shell: export LC_ALL=C && mongo --host {{ hostvars[inventory_hostname]['ansible_' + iface]['ipv4']['address']}} --port 27017 /tmp/config.js

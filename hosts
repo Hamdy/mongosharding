@@ -1,0 +1,35 @@
+[config_servers]
+192.168.90.3
+192.168.90.4
+
+[router_servers]
+192.168.90.5
+192.168.90.6
+
+[replicaset1]
+192.168.90.7
+192.168.90.8
+192.168.90.9 arbiter=true
+
+[replicaset1:vars]
+replicaset_name=replicaSet1
+
+
+[replicaset2]
+192.168.90.10
+192.168.90.11
+192.168.90.12 arbiter=true
+
+[replicaset2:vars]
+replicaset_name=replicaSet2
+
+
+[replicasets:children]
+replicaset1
+replicaset2
+
+
+[mongodb:children]
+config_servers
+router_servers
+replicasets

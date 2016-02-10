@@ -1,0 +1,8 @@
+---
+config_replicaset_name: configReplSet
+database_name: analytics
+mongo_admin_pass: 123456
+iface: eth1 #'{{ ansible_default_ipv4.interface }}'
+sharded_collections:
+  attributes:
+    _id: "hashed"

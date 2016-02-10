@@ -1,0 +1,7 @@
+---
+
+- name: Copying configuration js into /tmp
+  template: src=config.js dest=/tmp/sharding.js
+
+- name: Enable sharding and add shards
+  shell: export LC_ALL=C && mongo --host {{ hostvars[inventory_hostname]['ansible_' + iface]['ipv4']['address']}} --port 27017 /tmp/sharding.js

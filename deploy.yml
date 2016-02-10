@@ -1,0 +1,38 @@
+---
+
+- hosts: mongodb
+  sudo: yes
+  gather_facts: true
+  vars:
+    mongodb_data_idr: /data/db
+    apt_key_server: hkp://keyserver.ubuntu.com:80
+    apt_key_id: EA312927
+    mongodb_repo: http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.2 multiverse
+    mongo_system_user: mongod
+    mongo_system_group: mongod
+  roles:
+    - mongod
+
+- hosts: config_servers
+  gather_facts: true
+  sudo: yes
+  roles:
+    - mongoc
+
+- hosts: router_servers
+  gather_facts: true
+  sudo: yes
+  roles:
+    - mongos
+
+- hosts: replicasets
+  gather_facts: true
+  sudo: yes
+  roles:
+    - replicaset
+
+- hosts: router_servers
+  gather_facts: true
+  sudo: yes
+  roles:
+    - sharding

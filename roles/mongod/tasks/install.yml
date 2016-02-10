@@ -1,0 +1,26 @@
+---
+
+- name: Create the hosts file for all machines
+  template: src=hosts dest=/etc/hosts
+
+- name: Create the repository for 10Gen
+  template: src=mongo10gen.repo dest=/etc/apt/sources.list.d/mongodb-org-3.2.list
+
+- name: Create the mongod user
+  user: name="{{mongo_system_user}}"
+
+- name: Create the data directory for the namenode metadata
+  file: path="{{ mongodb_data_idr }}" owner="{{mongo_system_user}}" group="{{mongo_system_group}}" state=directory
+
+- name: Add Mongo 10gen APT key
+  apt_key: keyserver="{{apt_key_server}}" id="{{apt_key_id}}"
+
+- name: Update Cache
+  apt: update_cache=yes
+
+- name: Install Required packages
+  apt: name="{{ item }}" state=installed
+  with_items:
+   - mongodb-org
+   - bc
+   - python-pymongo
